@@ -46,11 +46,16 @@ requirements:
     - libboost-devel
     - occt
     - fmt
+    # our hep-forge root has ROOT::RHTTP enabled, which makes
+    # src/tools/CMakeLists.txt unconditionally build dd_web_display and
+    # link it to spdlog::spdlog with no spdlog_FOUND guard.
+    - spdlog
   run:
     - root {{ root }}.*
     - dd4hep>=1.18 root{{ root_tag }}
     - occt
     - fmt
+    - spdlog
     - python
 
 test:
@@ -58,6 +63,7 @@ test:
     - test -f "${PREFIX}/bin/npsim"
     - test -f "${PREFIX}/lib/libNPDetPlugins.so"
     - test -f "${PREFIX}/lib/libGeoCad.so"
+    - test -f "${PREFIX}/bin/dd_web_display"
     - npsim --help
 
 about:

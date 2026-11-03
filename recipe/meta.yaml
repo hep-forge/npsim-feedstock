@@ -69,8 +69,8 @@ requirements:
 test:
   commands:
     - test -f "${PREFIX}/bin/npsim"
-    - test -f "${PREFIX}/lib/libNPDetPlugins.so"
-    - test -f "${PREFIX}/lib/libGeoCad.so"
+    - test -f "${PREFIX}/lib/libNPDetPlugins.so" || test -f "${PREFIX}/lib/libNPDetPlugins.dylib"
+    - test -f "${PREFIX}/lib/libGeoCad.so" || test -f "${PREFIX}/lib/libGeoCad.dylib"
     - test -f "${PREFIX}/bin/dd_web_display"
     - npsim --help
 

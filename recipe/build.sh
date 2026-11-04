@@ -10,7 +10,16 @@ cd build
 # own script logic then walks DD4hep_DIR back up to the install root
 # (see cmake/DD4hepConfig.cmake.in upstream), which is what npsim's own
 # CMakeLists.txt (include(${DD4hep_DIR}/cmake/DD4hep.cmake)) expects.
-cmake .. \
+# macOS: Geant4Config's find_dependency(EXPAT) reads the SDK's expat.h
+# (2.2.5 < 2.9.0) even with CMAKE_PREFIX_PATH; name conda's expat directly.
+EXTRA_ARGS=()
+if [[ "$(uname)" == "Darwin" ]]; then
+  EXTRA_ARGS+=(-DCMAKE_FIND_FRAMEWORK=LAST
+               -DEXPAT_INCLUDE_DIR="${PREFIX}/include"
+               -DEXPAT_LIBRARY="${PREFIX}/lib/libexpat${SHLIB_EXT}")
+fi
+
+cmake .. "${EXTRA_ARGS[@]}" \
   -DCMAKE_INSTALL_PREFIX="${PREFIX}" \
   -DCMAKE_BUILD_TYPE=Release \
   -DUSE_GEOCAD=ON \

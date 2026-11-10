@@ -46,7 +46,8 @@ requirements:
     # feedstock's own .github/workflows/autoupload.yml adds that channel
     # (scripts/templates/autoupload.yml deliberately does not, most
     # feedstocks don't need it) -- dd4hep pulls geant in transitively.
-    - root {{ root }}.*
+    - root_base {{ root }}.* cxx{{ root_cxx_standard }}*
+    - python
     - dd4hep>=1.18 root{{ root_tag }}
     # DD4hepConfig.cmake does FIND_DEPENDENCY(Boost REQUIRED) at every
     # consumer's own configure time (caught while debugging epic's
@@ -59,7 +60,7 @@ requirements:
     # link it to spdlog::spdlog with no spdlog_FOUND guard.
     - spdlog
   run:
-    - root {{ root }}.*
+    - {{ pin_compatible('root_base', exact=True) }}
     - dd4hep>=1.18 root{{ root_tag }}
     - occt
     - fmt
